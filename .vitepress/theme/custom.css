@@ -1,0 +1,78 @@
+/* TenArm BES — Documentation Theme Overrides
+   Brand: maroon #A60212 (used surgically, Netflix-style)
+   Typography: Inter (body) + JetBrains Mono (code)
+   Aligned with new-website/css/01-foundation.css design tokens */
+
+:root {
+  /* Brand — maroon accent applied surgically */
+  --vp-c-brand-1: #a60212;
+  --vp-c-brand-2: #85010f;
+  --vp-c-brand-3: #c4142a;
+  --vp-c-brand-soft: rgba(166, 2, 18, 0.08);
+
+  /* Typography */
+  --vp-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+
+  /* Clean light surfaces */
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-soft: #f8fafc;
+  --vp-c-bg-mute: #f1f5f9;
+
+  /* Tabular numerals for all data */
+  font-variant-numeric: tabular-nums;
+}
+
+.dark {
+  /* Dark mode: navy-based, matching marketing site */
+  --vp-c-bg: #0f172a;
+  --vp-c-bg-soft: #1e293b;
+  --vp-c-bg-mute: #334155;
+}
+
+/* Sidebar active item — maroon left border */
+.VPSidebarItem.is-active > .item > .indicator {
+  background-color: var(--vp-c-brand-1);
+}
+
+/* Nav active link — maroon underline */
+.VPNavBarMenuLink.active::after {
+  background-color: var(--vp-c-brand-1);
+}
+
+/* Home hero gradient text accent */
+.VPHero .clip {
+  background: linear-gradient(135deg, var(--vp-c-brand-1) 0%, #d11a2a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Feature cards — subtle shadows, rounded */
+.VPFeature {
+  border-radius: 16px;
+  transition: box-shadow 0.2s ease;
+}
+.VPFeature:hover {
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+}
+
+/* Code blocks — match JetBrains Mono */
+.vp-code-group,
+div[class*='language-'] {
+  border-radius: 12px;
+}
+
+/* Tables — zebra striping and tabular numerals */
+.vp-doc table {
+  font-variant-numeric: tabular-nums;
+}
+.vp-doc tr:nth-child(even) {
+  background-color: var(--vp-c-bg-soft);
+}
+
+/* Mermaid diagrams — clean borders */
+.mermaid {
+  margin: 1.5rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+}

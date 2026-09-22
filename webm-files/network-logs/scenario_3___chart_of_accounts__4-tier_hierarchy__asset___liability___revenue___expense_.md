@@ -1,0 +1,47 @@
+# Network Log: Scenario 3 — Chart of Accounts: 4-tier hierarchy (ASSET / LIABILITY / REVENUE / EXPENSE)
+
+## HTTP Requests Trace
+- GET http://localhost:5173/src/api/client.ts -> 200
+- GET http://localhost:5173/src/api/auth.ts -> 200
+- GET http://localhost:5173/src/api/errors.ts -> 200
+- GET http://localhost:5173/src/api/organizations.ts?t=1789217256417 -> 200
+- GET http://localhost:5173/src/api/search.ts -> 200
+- GET http://localhost:5173/src/api/ai.ts -> 200
+- GET http://localhost:5173/src/api/cache.ts -> 200
+- GET http://localhost:5173/src/api/notifications.ts -> 200
+- GET http://localhost:5173/src/api/workboard.ts -> 200
+- GET http://localhost:8000/api/ui/context -> 200
+- GET http://localhost:8000/api/ui/context -> 200
+- GET http://localhost:8000/api/notifications?limit=1 -> 200
+- GET http://localhost:8000/api/ai/status -> 200
+- GET http://localhost:8000/api/notifications?limit=1 -> 200
+- GET http://localhost:8000/api/ai/status -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/workboard/flow-pulse -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/workboard/flow-pulse -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:5173/src/api/client.ts -> 200
+- GET http://localhost:5173/src/api/auth.ts -> 200
+- GET http://localhost:5173/src/api/errors.ts -> 200
+- GET http://localhost:5173/src/api/organizations.ts?t=1789217256417 -> 200
+- GET http://localhost:5173/src/api/search.ts -> 200
+- GET http://localhost:5173/src/api/ai.ts -> 200
+- GET http://localhost:5173/src/api/cache.ts -> 200
+- GET http://localhost:5173/src/api/notifications.ts -> 200
+- GET http://localhost:5173/src/api/workboard.ts -> 200
+- GET http://localhost:8000/api/ui/context -> 200
+- GET http://localhost:8000/api/ui/context -> 200
+- GET http://localhost:8000/api/notifications?limit=1 -> 200
+- GET http://localhost:8000/api/ai/status -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/notifications?limit=1 -> 200
+- GET http://localhost:8000/api/ai/status -> 200
+- GET http://localhost:5173/src/apps/finance/api/finance.ts -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/workboard/my-day -> 200
+- GET http://localhost:8000/api/finance/accounts? -> 200
