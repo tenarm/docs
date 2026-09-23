@@ -6,7 +6,7 @@ export default withMermaid(
     title: 'TenArm BES',
     description: 'Complete documentation for the TenArm Business Execution System',
     ignoreDeadLinks: true,
-    srcExclude: ['**/node_modules/**', '**/webm-files/**', '**/_generated-profiles/**'],
+    srcExclude: ['**/node_modules/**'],
     head: [
       ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
       ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],

@@ -1,3 +1,26 @@
+# Dependencies
 node_modules/
+
+# Build output
 .vitepress/dist/
+.vitepress/cache/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.*
