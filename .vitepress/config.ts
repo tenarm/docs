@@ -5,6 +5,7 @@ export default withMermaid(
   defineConfig({
     title: 'TenArm BES',
     description: 'Complete documentation for the TenArm Business Execution System',
+    base: '/docs/',
     ignoreDeadLinks: true,
     srcExclude: ['**/node_modules/**'],
     head: [
