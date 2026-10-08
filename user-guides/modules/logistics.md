@@ -18,17 +18,18 @@ The Logistics add-on manages outbound shipments — dispatch scheduling, carrier
 
 ```mermaid
 stateDiagram-v2
-    [*] --> PLANNED : Create
-    PLANNED --> DISPATCHED : Dispatch
+    [*] --> DISPATCHED : Dispatch
     DISPATCHED --> IN_TRANSIT : Carrier Pickup
-    IN_TRANSIT --> DELIVERED : Confirm Delivery
-    PLANNED --> CANCELLED : Cancel
+    IN_TRANSIT --> OUT_FOR_DELIVERY : Out for Delivery
+    OUT_FOR_DELIVERY --> DELIVERED : Confirm Delivery
+    DISPATCHED --> CANCELLED : Cancel / Void
+    IN_TRANSIT --> CANCELLED : Cancel / Void
 ```
 
-1. **Plan** — Create a shipment with items, destination, and carrier
-2. **Dispatch** — Hand off to the carrier with tracking details
-3. **In Transit** — Track movement
-4. **Deliver** — Confirm delivery with proof of delivery
+1. **Dispatch** — Hand off order to carrier and generate delivery note (`DISPATCHED`)
+2. **In Transit** — Track movement, carrier checkpoints, and tracking URLs (`IN_TRANSIT` / `OUT_FOR_DELIVERY`)
+3. **Deliver** — Confirm delivery with recipient name and proof of delivery (`DELIVERED`)
+4. **Cancel / Void** — Cancel uncompleted shipment and reverse stock draw (`CANCELLED`)
 
 ### Carrier Tracking
 - Record carrier name, tracking number, and estimated delivery
@@ -44,9 +45,9 @@ stateDiagram-v2
 
 | Page | Path | Permission |
 |------|------|-----------|
-| Logistics Desk | `/logistics` | `logistics.shipment.view` |
-| Shipments | `/logistics/shipments` | `logistics.shipment.view` |
-| Dashboard | `/logistics/dashboard` | `logistics.shipment.view` |
+| Logistics Desk | `/logistics` | `shipment.view` |
+| Shipments | `/logistics/shipments` | `shipment.view` |
+| Dashboard | `/logistics/dashboard` | `shipment.view` |
 
 ## Cross-Module Integration
 
@@ -59,7 +60,8 @@ stateDiagram-v2
 
 | Permission | Description |
 |-----------|-------------|
-| `logistics.shipment.view` | View shipments |
-| `logistics.shipment.create` | Create shipments |
-| `logistics.shipment.dispatch` | Dispatch shipments |
-| `logistics.shipment.deliver` | Confirm delivery |
+| `shipment.view` | View logistics desk, shipments register, and analytics dashboard |
+| `shipment.dispatch` | Dispatch shipments |
+| `shipment.update` | Update carrier, tracking, and transport details |
+| `shipment.deliver` | Confirm delivery |
+| `shipment.cancel` | Void delivery note and reverse inventory draw |

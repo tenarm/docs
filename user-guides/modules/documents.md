@@ -42,6 +42,8 @@ Templates use placeholders that auto-fill with document data:
 - Download or email the generated PDF
 - Multiple templates per document type (e.g., detailed vs summary invoice)
 
+*Note: Generating and downloading document PDFs is authorized by the underlying business document view permission (e.g., `quote.view`, `order.view`, `finance.invoice.view`, `po.view`, `shipment.view`).*
+
 ## Navigation
 
 | Page | Path | Permission |
@@ -52,7 +54,7 @@ Templates use placeholders that auto-fill with document data:
 
 | Permission | Description |
 |-----------|-------------|
-| `document_template.view` | View templates |
-| `document_template.create` | Create/edit templates |
-| `document_template.delete` | Delete templates |
-| `document.generate` | Generate PDFs from templates |
+| `document_template.view` | View and preview document templates |
+| `document_template.create` | Create new document templates |
+| `document_template.update` | Edit existing document templates |
+| `document_template.delete` | Delete document templates |

@@ -161,7 +161,7 @@ Logs follow-ups, calls, meetings, emails, and tasks against CRM records.
 | `crm.dashboard.view` | View the CRM metrics and funnel dashboard. |
 | `lead.view` / `lead.create` / `lead.update` | Basic CRUD operations for Leads. |
 | `lead.contact` / `lead.qualify` | Advance lead through early stages. |
-| `lead.win` / `lead.lose` / `lead.reopen` | Close or reopen leads. |
+| `lead.lose` / `lead.reopen` | Close or reopen leads. |
 | `lead.convert` | Turn a lead into an Account, Contact, and Opportunity. |
 | `deal.view` / `deal.create` / `deal.update` | Basic CRUD operations for Opportunities. |
 | `deal.advance` | Move a deal through pipeline stages (e.g., Proposal to Negotiation). |

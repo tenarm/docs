@@ -215,6 +215,30 @@ Drafts are stored in your browser's session storage. If you switch to a differen
 
 ---
 
+## Real-Time Sync & Conflict Resolution
+
+TenArm BES is built for concurrent, multi-user operations. Multiple teammates can view and manage transactions simultaneously without stale data or lost updates.
+
+### Live Updates (Zero Polling)
+
+The workspace maintains an active real-time event stream (SSE) with the backend:
+- When a teammate approves an order, receives stock at the warehouse, or posts a payment, the update streams directly to your browser.
+- Lists, status pills, and document storylines refresh in the background automatically.
+- Live updates **never interrupt your typing or unmount unsaved form drafts**.
+
+### Conflict Resolution Drawer
+
+If another user modifies and saves a document while you are editing it:
+1. When you submit your changes, the system detects that a newer version exists on the server (Optimistic Concurrency Control).
+2. The **Conflict Resolution Drawer** slides open with a side-by-side comparison:
+   - **Your Edits**: The exact values you entered.
+   - **Latest Server Version**: The latest saved record from your teammate.
+3. You have full control over how to resolve the collision:
+   - **Reload Latest**: Discard your local edits and load the updated server version.
+   - **Overwrite with My Changes**: Apply your changes on top of the newer version.
+
+---
+
 ## Keyboard Shortcuts
 
 | Shortcut | Action |
