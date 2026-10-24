@@ -37,17 +37,20 @@ Once State Code is set, the system automatically determines tax type when postin
 
 ## TDS Configuration (India)
 
-For buyer-side TDS under Section 194Q:
+Buyer-side TDS under Section 194Q applies to a buyer whose turnover passed ₹10 crore in the preceding year.
+You declare only that; the rate and threshold are the law and come with the India pack:
 
 | Setting | Default | Purpose |
 |---------|---------|---------|
-| **TDS Enabled** | Off | Toggle TDS deduction on purchase bills |
-| **TDS Threshold** | ₹50,00,000 | Cumulative purchase threshold per supplier per financial year |
-| **TDS Rate** | 0.1% | Rate applied on amount exceeding the threshold |
+| **TDS u/s 194Q applies** | Off | Your organization is a buyer under Section 194Q |
 
-When enabled, `bill.post` automatically deducts TDS on qualifying purchases:
+The page shows the rule in force — today 0.1% of purchases from one supplier above ₹50,00,000 in a
+financial year. When the law changes, an India pack update brings the new rule from the date it takes
+effect; bills dated earlier keep the rule of their date.
+
+When it applies, posting a bill withholds TDS on the part of the supplier's purchases above the threshold:
 - Debit: Accounts Payable
-- Credit: TDS Payable
+- Credit: TDS Payable (map an account to the **TdsDeduction** document type)
 
 ## AI Tier
 
