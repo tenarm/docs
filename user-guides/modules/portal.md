@@ -56,9 +56,8 @@ Portal users see a simplified menu:
 | Permission | Description |
 |-----------|-------------|
 | `portal.orders.view` | View own orders |
-| `portal.invoices.view` | View own invoices |
-| `portal.tickets.view` | View own service tickets |
-| `portal.tickets.create` | Submit new service tickets |
+| `portal.orders.create` | Place new orders |
+| `portal.orders.cancel` | Cancel own draft/submitted orders |
 
 ::: tip
 Portal users use the same login page and authentication flow as internal users. The system automatically presents the portal layout based on their role.
