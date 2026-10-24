@@ -53,7 +53,8 @@ Your customer and supplier master records.
 | Type | ✅ | `CUSTOMER`, `SUPPLIER`, or `BOTH` |
 | Email | — | String |
 | Phone | — | String |
-| Tax ID / GSTIN | — | String |
+| Tax ID | — | String — checked in your country's format (an Indian organization's is its GSTIN) |
+| Tax Region | — | String — e.g. the GST state code; when blank, an Indian GSTIN's own state applies |
 | Address | — | JSON or structured fields |
 
 ### 4. Products
