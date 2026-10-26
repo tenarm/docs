@@ -214,7 +214,7 @@ In practice, the procurement team creates and submits POs, a warehouse team rece
 
 ## Related Guides
 
-- **[Procurement Module](./modules/procurement)** — Purchase order management
-- **[Inventory Module](./modules/inventory)** — Stock operations and warehouses
-- **[Finance Module](./modules/finance)** — Bills, payments, and GL
-- **[Order to Cash (O2C)](./order-to-cash)** — The selling counterpart to P2P
+- **[Procurement Module](../modules/procurement.md)** — Purchase order management
+- **[Inventory Module](../modules/inventory.md)** — Stock operations and warehouses
+- **[Finance Module](../modules/finance.md)** — Bills, payments, and GL
+- **[Order to Cash (O2C)](./order-to-cash.md)** — The selling counterpart to P2P

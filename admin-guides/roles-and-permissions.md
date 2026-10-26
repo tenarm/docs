@@ -82,7 +82,7 @@ Each permission controls a specific action. Permission codes follow a consistent
 
 ## Permission Reference
 
-For the complete list of all permissions organized by module, see the auto-generated **[Permission Catalog](/_generated-rbac-detail)**.
+For the complete list of all permissions organized by module, see the platform permission definitions in the Integrator documentation or inspect live permissions using `./tenarm facts apps`.
 
 ::: info Full Catalog Available
 The system declares **200+ individual permissions** across 18 modules. The complete catalog — including which roles grant each permission — is auto-generated from the codebase and always reflects the current version.

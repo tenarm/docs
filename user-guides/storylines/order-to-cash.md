@@ -270,8 +270,8 @@ In practice, different people handle different stages. A sales rep manages leads
 
 ## Related Guides
 
-- **[CRM Module](./modules/crm)** — Lead management and opportunity pipeline
-- **[Sales Module](./modules/sales)** — Quotations and order lifecycle
-- **[Inventory Module](./modules/inventory)** — Stock operations and warehouses
-- **[Finance Module](./modules/finance)** — Invoicing, payments, and GL
-- **[Procure to Pay (P2P)](./procure-to-pay)** — The purchasing counterpart to O2C
+- **[CRM Module](../modules/crm.md)** — Lead management and opportunity pipeline
+- **[Sales Module](../modules/sales.md)** — Quotations and order lifecycle
+- **[Inventory Module](../modules/inventory.md)** — Stock operations and warehouses
+- **[Finance Module](../modules/finance.md)** — Invoicing, payments, and GL
+- **[Procure to Pay (P2P)](./procure-to-pay.md)** — The purchasing counterpart to O2C

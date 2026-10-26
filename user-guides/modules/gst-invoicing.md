@@ -37,9 +37,9 @@ The GST Invoicing add-on generates GST-compliant electronic invoices through Ind
 ### Prerequisites
 
 Before using GST Invoicing, configure:
-- **Organization GSTIN** — in [Tenant Setup](../admin-guides/tenant-setup)
+- **Organization GSTIN** — in [Tenant Setup](../../admin-guides/tenant-setup.md)
 - **State Code** — for intra/inter-state determination
-- **Tax Codes** — GST rates in [Finance Setup](../admin-guides/finance-setup)
+- **Tax Codes** — GST rates in [Finance Setup](../../admin-guides/finance-setup.md)
 
 ## Navigation
 
