@@ -52,19 +52,20 @@ When it applies, posting a bill withholds TDS on the part of the supplier's purc
 - Debit: Accounts Payable
 - Credit: TDS Payable (map an account to the **TdsDeduction** document type)
 
-## AI Tier
+## AI
 
-Control which AI features are available to your organization:
+AI comes as two apps, switched on or off like any other:
 
-| Tier | Features |
-|------|----------|
-| **NONE** (default) | No AI features |
-| **RULE_BASED** | Deterministic alerts (overdue PO, reorder point, dead stock) |
-| **ML_ENABLED** | Rule-based + statistical ML (demand forecast, supplier scoring) |
-| **AI_ENABLED** | All above + LLM co-pilot (chat, draft generation) |
+| App | What it does | Default |
+|-----|--------------|---------|
+| **AI Insights** | Rule-based alerts on your documents: overdue purchase orders, reorder points, dead stock, over-committed demand. Nothing leaves your server. | On |
+| **AI Assistant** | Ask about sales, pipeline and finances in plain language. Questions go to an external AI provider. | Off |
+
+Your organization can have either, both or neither. Users also need the permissions: `ai.view` to see insights,
+`assistant.ask` to use the assistant.
 
 ::: warning
-AI tier is set by the platform administrator. Contact your TenArm provider to upgrade.
+The platform administrator switches these apps on or off. Contact your TenArm provider to change them.
 :::
 
 ## Branches & Departments
