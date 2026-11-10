@@ -36,3 +36,8 @@ Follow complete business processes across multiple modules:
 | [Documents](./modules/documents) | Document management and templates |
 | [Portal](./modules/portal) | Customer and vendor self-service portal |
 | [GST Invoicing](./modules/gst-invoicing) | India GST compliance and e-invoicing |
+| [Steel](./modules/steel) | Coil register, heat and grade tracking, catch-weight allocation |
+| [Employee Self-Service](./modules/self-service) | Your own leave, attendance, payslips and expense claims |
+| [Reporting](./modules/reporting) | The CEO Dashboard across every module |
+| [AI Insights](./modules/ai) | Rule-based alerts on overdue orders, dead stock and over-commitment |
+| [AI Assistant](./modules/assistant) | Ask about sales, pipeline and finances in plain language |

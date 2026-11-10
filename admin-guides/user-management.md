@@ -17,7 +17,7 @@ Every person who uses TenArm BES needs a user account. This guide covers creatin
 |-------|:--------:|-------|
 | **Email** | ✅ | Must be unique across the entire system. Used for login. |
 | **Full Name** | ✅ | Displayed throughout the UI |
-| **Password** | ✅ | Set an initial password for the user |
+| **Password** | ✅ | Set initial password (must meet 12+ character complexity standards) |
 | **Active** | ✅ | Defaults to active. Deactivate to suspend access without deleting. |
 
 4. Click **Save**
@@ -72,7 +72,44 @@ The user can no longer log in, but their data (created records, audit trail) is 
 
 1. Select the user
 2. Use the **Reset Password** option
-3. Set a new password
+3. Enter a new password meeting enterprise security requirements (12+ characters, uppercase, lowercase, number, symbol)
+4. Confirm to reset immediately
+
+## Account Security & Device Controls
+
+### Password Complexity Standards
+
+To protect organizational business data, user passwords must satisfy the following minimum requirements:
+- At least **12 characters** in length
+- At least one **uppercase letter** (`A-Z`)
+- At least one **lowercase letter** (`a-z`)
+- At least one **number** (`0-9`)
+- At least one **special symbol** (e.g. `!@#$%^&*()_+-=`)
+
+### Automatic Brute-Force Lockout
+
+To defend against credential stuffing and automated password guessing:
+- If a user enters an incorrect password **5 consecutive times**, the account is temporarily locked for **15 minutes**.
+- During the lockout window, subsequent login attempts are rejected with an explicit security notice (`Account locked due to consecutive failed login attempts`).
+- Once the 15-minute cooldown elapses, entering the correct password restores full access and resets the failed attempt counter to zero.
+- Administrators can unlock a locked user immediately at any time by triggering a **Reset Password**.
+
+### Active Sessions & Recognized Devices
+
+Users and administrators can monitor and manage all active signed-in sessions:
+
+1. Click on the user profile avatar in the top-right application header
+2. Select **Active Sessions**
+3. The modal displays:
+   - **Device & Platform**: Device type icon (Desktop, Mobile, Tablet) with browser and OS details (e.g., `Chrome on macOS`).
+   - **Network & Location**: Client IP address and resolved geographical location (City, Country).
+   - **Sign-in Timestamp**: When the session was initiated.
+   - **This Device Tag**: Highlights the current browser session in green.
+4. **Remote Sign Out & Instant Invalidation**:
+   - Web browser sessions use hardened `HttpOnly, Secure, SameSite=Lax` server session cookies. No tokens or credentials reside in browser `localStorage`, eliminating client-side token theft vectors.
+   - Click **Sign Out** next to any specific device to instantly terminate its session in PostgreSQL (e.g. if a phone or laptop was misplaced).
+   - Click **Sign Out Others** to terminate all other active sign-ins in one action, leaving only the current device authenticated.
+   - **Real-Time Push Disconnect**: Terminated devices do not wait for a grace period or expiry window; the server immediately marks their session inactive in PostgreSQL, and pushes an instant SSE disconnect notification that terminates active browser sessions, clears local workspace tabs and drafts, and redirects remote browsers back to the login screen.
 
 ### Portal Users
 
