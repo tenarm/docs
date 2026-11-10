@@ -1,13 +1,108 @@
 import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
+interface ModuleItem {
+  id: string
+  text: string
+  link: string
+}
+
+const ALL_MODULES: ModuleItem[] = [
+  { id: 'crm', text: 'CRM', link: '/user-guides/modules/crm' },
+  { id: 'sales', text: 'Sales', link: '/user-guides/modules/sales' },
+  { id: 'procurement', text: 'Procurement', link: '/user-guides/modules/procurement' },
+  { id: 'inventory', text: 'Inventory', link: '/user-guides/modules/inventory' },
+  { id: 'finance', text: 'Finance', link: '/user-guides/modules/finance' },
+  { id: 'hr', text: 'HR', link: '/user-guides/modules/hr' },
+  { id: 'payroll', text: 'Payroll', link: '/user-guides/modules/payroll' },
+  { id: 'manufacturing', text: 'Manufacturing', link: '/user-guides/modules/manufacturing' },
+  { id: 'maintenance', text: 'Maintenance', link: '/user-guides/modules/maintenance' },
+  { id: 'asset_management', text: 'Asset Management', link: '/user-guides/modules/asset-management' },
+  { id: 'projects', text: 'Projects', link: '/user-guides/modules/projects' },
+  { id: 'service', text: 'Service', link: '/user-guides/modules/service' },
+  { id: 'logistics', text: 'Logistics', link: '/user-guides/modules/logistics' },
+  { id: 'documents', text: 'Documents', link: '/user-guides/modules/documents' },
+  { id: 'portal', text: 'Portal', link: '/user-guides/modules/portal' },
+  { id: 'india', text: 'GST Invoicing', link: '/user-guides/modules/gst-invoicing' },
+  { id: 'steel', text: 'Steel', link: '/user-guides/modules/steel' },
+  { id: 'self_service', text: 'Employee Self-Service', link: '/user-guides/modules/self-service' },
+  { id: 'reporting', text: 'Reporting', link: '/user-guides/modules/reporting' },
+  { id: 'ai', text: 'AI Insights', link: '/user-guides/modules/ai' },
+  { id: 'assistant', text: 'AI Assistant', link: '/user-guides/modules/assistant' },
+]
+
+interface StorylineItem {
+  text: string
+  link: string
+  requires: string[]
+}
+
+const ALL_STORYLINES: StorylineItem[] = [
+  { text: 'Order to Cash (O2C)', link: '/user-guides/storylines/order-to-cash', requires: ['sales', 'inventory'] },
+  { text: 'Procure to Pay (P2P)', link: '/user-guides/storylines/procure-to-pay', requires: ['procurement', 'inventory'] },
+  { text: 'Make to Order (M2O)', link: '/user-guides/storylines/make-to-order', requires: ['manufacturing', 'steel'] },
+]
+
+// Support explicit tenant filtering via DOCS_ENABLED_APPS (comma-separated list of active app ids, or 'all'/'*')
+const normalizeAppId = (s: string) => s.trim().toLowerCase().replace(/-/g, '_')
+const enabledAppsEnv = process.env.DOCS_ENABLED_APPS?.trim().toLowerCase()
+const isAll = !enabledAppsEnv || enabledAppsEnv === 'all' || enabledAppsEnv === '*'
+const enabledSet = isAll
+  ? null
+  : new Set(enabledAppsEnv.split(',').map(normalizeAppId))
+
+const activeModules = enabledSet
+  ? ALL_MODULES.filter((m) => enabledSet.has(normalizeAppId(m.id)))
+  : ALL_MODULES
+
+const activeStorylines = enabledSet
+  ? ALL_STORYLINES.filter((s) => s.requires.some((r) => enabledSet.has(normalizeAppId(r))))
+  : ALL_STORYLINES
+
+const ALL_MODULE_SLUGS: Record<string, string> = {
+  crm: 'crm',
+  sales: 'sales',
+  procurement: 'procurement',
+  inventory: 'inventory',
+  finance: 'finance',
+  hr: 'hr',
+  payroll: 'payroll',
+  manufacturing: 'manufacturing',
+  maintenance: 'maintenance',
+  asset_management: 'asset-management',
+  projects: 'projects',
+  service: 'service',
+  logistics: 'logistics',
+  documents: 'documents',
+  portal: 'portal',
+  india: 'gst-invoicing',
+  steel: 'steel',
+  self_service: 'self-service',
+  reporting: 'reporting',
+  ai: 'ai',
+  assistant: 'assistant',
+}
+
+const srcExcludeGlobs: string[] = ['**/node_modules/**']
+if (enabledSet) {
+  for (const [id, slug] of Object.entries(ALL_MODULE_SLUGS)) {
+    if (!enabledSet.has(normalizeAppId(id))) {
+      srcExcludeGlobs.push(`user-guides/modules/${slug}.md`)
+    }
+  }
+}
+
+const title = process.env.DOCS_TITLE || 'TenArm BES'
+const siteTitle = process.env.DOCS_SITE_TITLE || (process.env.DOCS_TITLE ? `${process.env.DOCS_TITLE} — Docs` : 'TenArm BES Docs')
+
 export default withMermaid(
   defineConfig({
-    title: 'TenArm BES',
+    title,
     description: 'Complete documentation for the TenArm Business Execution System',
-    base: process.env.VITEPRESS_BASE || '/',
+    // User documentation defaults to /docs/ to serve directly on https://<tenant>.tenarm.com/docs/
+    base: process.env.VITEPRESS_BASE || '/docs/',
     ignoreDeadLinks: true,
-    srcExclude: ['**/node_modules/**'],
+    srcExclude: srcExcludeGlobs,
     head: [
       ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
       ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
@@ -20,7 +115,7 @@ export default withMermaid(
         light: '/tenarm-mark-light.svg',
         dark: '/tenarm-mark-dark.svg',
       },
-      siteTitle: 'TenArm BES Docs',
+      siteTitle,
 
       nav: [
         { text: 'Getting Started', link: '/getting-started/what-is-tenarm-bes' },
@@ -48,41 +143,19 @@ export default withMermaid(
               { text: 'Workspace Basics', link: '/user-guides/workspace-basics' },
             ],
           },
-          {
-            text: 'Storylines',
-            collapsed: false,
-            items: [
-              { text: 'Order to Cash (O2C)', link: '/user-guides/storylines/order-to-cash' },
-              { text: 'Procure to Pay (P2P)', link: '/user-guides/storylines/procure-to-pay' },
-              { text: 'Make to Order (M2O)', link: '/user-guides/storylines/make-to-order' },
-            ],
-          },
+          ...(activeStorylines.length > 0
+            ? [
+                {
+                  text: 'Storylines',
+                  collapsed: false,
+                  items: activeStorylines.map(({ text, link }) => ({ text, link })),
+                },
+              ]
+            : []),
           {
             text: 'Modules',
             collapsed: false,
-            items: [
-              { text: 'CRM', link: '/user-guides/modules/crm' },
-              { text: 'Sales', link: '/user-guides/modules/sales' },
-              { text: 'Procurement', link: '/user-guides/modules/procurement' },
-              { text: 'Inventory', link: '/user-guides/modules/inventory' },
-              { text: 'Finance', link: '/user-guides/modules/finance' },
-              { text: 'HR', link: '/user-guides/modules/hr' },
-              { text: 'Payroll', link: '/user-guides/modules/payroll' },
-              { text: 'Manufacturing', link: '/user-guides/modules/manufacturing' },
-              { text: 'Maintenance', link: '/user-guides/modules/maintenance' },
-              { text: 'Asset Management', link: '/user-guides/modules/asset-management' },
-              { text: 'Projects', link: '/user-guides/modules/projects' },
-              { text: 'Service', link: '/user-guides/modules/service' },
-              { text: 'Logistics', link: '/user-guides/modules/logistics' },
-              { text: 'Documents', link: '/user-guides/modules/documents' },
-              { text: 'Portal', link: '/user-guides/modules/portal' },
-              { text: 'GST Invoicing', link: '/user-guides/modules/gst-invoicing' },
-              { text: 'Steel', link: '/user-guides/modules/steel' },
-              { text: 'Employee Self-Service', link: '/user-guides/modules/self-service' },
-              { text: 'Reporting', link: '/user-guides/modules/reporting' },
-              { text: 'AI Insights', link: '/user-guides/modules/ai' },
-              { text: 'AI Assistant', link: '/user-guides/modules/assistant' },
-            ],
+            items: activeModules.map(({ text, link }) => ({ text, link })),
           },
         ],
 
