@@ -1,146 +1,161 @@
 ---
 title: Finance Setup
-description: Configure your chart of accounts, tax codes, accounting periods, and bank accounts.
+description: Configure chart of accounts, tax codes, fiscal accounting periods, bank accounts, and posting policies in TenArm BES.
 ---
 
 # Finance Setup
 
-Before using the Finance module, set up your accounting foundation. This is typically done once during initial setup.
+Before posting sales invoices, vendor bills, inventory adjustments, or payroll pay runs, administrators must establish the organization's accounting foundation.
 
-## Chart of Accounts (COA)
+This guide walks through configuring the **Chart of Accounts (COA)**, **Tax Codes**, **Fiscal Accounting Periods**, and **Bank Accounts**.
 
-The Chart of Accounts is the master list of all financial accounts your organization uses.
+---
+
+## Workspace Ergonomics
+
+Financial setup and ledger operations adhere to strict workspace ergonomics:
+
+- **Multi-Tab Desk**: Financial leads can maintain up to 3 active tabs simultaneously (e.g. keeping the **Chart of Accounts** open while inspecting active **Tax Codes** and verifying monthly **Accounting Periods**).
+- **Draft Auto-Save & Dirty Dot**: Uncommitted ledger entries and tax code configurations are preserved in local browser session storage, displaying a dirty dot indicator (`•`) on the tab header until committed.
+- **Quick-Peek Account Inspection**: Clicking any account code or journal reference opens a contextual slide-out drawer from the right edge of the screen, revealing real-time debit/credit balances and recent transaction history without navigating away.
+- **Optimistic Concurrency Control (OCC)**: Financial masters and accounting period controls are versioned. If two administrators modify account attributes or close a period concurrently, the system prevents race conditions with immediate conflict alerts.
+
+---
+
+## 1. Chart of Accounts (COA)
+
+The Chart of Accounts (`/finance/accounts`) is the authoritative general ledger directory governing all financial transactions in TenArm BES.
 
 ### Account Structure
 
-| Field | Required | Description |
-|-------|:--------:|-------------|
-| **Account Code** | ✅ | Unique identifier (e.g., `1100`, `4000`) |
-| **Account Name** | ✅ | Descriptive name (e.g., "Cash at Bank", "Sales Revenue") |
-| **Account Type** | ✅ | `ASSET`, `LIABILITY`, `EQUITY`, `REVENUE`, `EXPENSE` |
-| **Parent Account** | — | For hierarchical grouping |
-| **Is Active** | ✅ | Inactive accounts can't receive new postings |
+Every ledger account requires:
 
-### Setting Up
+| Field | Required | Description & Constraints |
+|---|:---:|---|
+| **Account Code** | ✅ | Unique alphanumeric code (e.g. `1100`, `2100`, `4000`, `5100`). |
+| **Account Name** | ✅ | Clear business description (e.g. *Operating Cash*, *Trade Accounts Receivable*, *Sales Revenue*). |
+| **Account Type** | ✅ | One of the 5 canonical categories: `ASSET`, `LIABILITY`, `EQUITY`, `REVENUE`, `EXPENSE`. |
+| **Normal Balance** | ✅ | Standard financial direction: `DEBIT` (for Assets & Expenses) or `CREDIT` (for Liabilities, Equity & Revenue). Automatically derived if omitted. |
+| **Parent Account** | — | Optional parent code for multi-tier hierarchical grouping on Balance Sheet and Income Statement reports. |
+| **Status** | ✅ | `ACTIVE` (can receive postings) or `INACTIVE` (blocked from new journal postings). |
 
-1. Navigate to **Finance → Chart of Accounts**
-2. The system provides a standard COA template on first setup
-3. Add, modify, or organize accounts as needed
-4. **Group accounts** into hierarchies for reporting (e.g., Current Assets → Cash, Bank, Receivables)
+### Standard Five-Tier Structure
 
-### Common Account Categories
+```mermaid
+flowchart TD
+    COA["Chart of Accounts Master"]
+    COA --> Asset["1000: ASSETS (Normal: DEBIT)"]
+    COA --> Liab["2000: LIABILITIES (Normal: CREDIT)"]
+    COA --> Eq["3000: EQUITY (Normal: CREDIT)"]
+    COA --> Rev["4000: REVENUE (Normal: CREDIT)"]
+    COA --> Exp["5000: EXPENSES (Normal: DEBIT)"]
 
-| Type | Examples | Normal Balance |
-|------|----------|:-------------:|
-| **Asset** | Cash, Bank, Accounts Receivable, Inventory | Debit |
-| **Liability** | Accounts Payable, Tax Payable, Loans | Credit |
-| **Equity** | Owner's Capital, Retained Earnings | Credit |
-| **Revenue** | Sales, Service Income, Interest | Credit |
-| **Expense** | COGS, Salaries, Rent, Utilities | Debit |
+    Asset --> A1["1100: Cash & Bank Accounts"]
+    Asset --> A2["1200: Trade Accounts Receivable"]
+    Asset --> A3["1300: Warehouse Inventory Asset"]
 
-::: warning
-Once journal entries are posted against an account, its type cannot be changed. Plan your COA structure carefully before posting transactions.
+    Liab --> L1["2100: Trade Accounts Payable"]
+    Liab --> L2["2200: Statutory Tax / GST Payable"]
+
+    Rev --> R1["4100: Finished Goods Sales"]
+    Exp --> E1["5100: Cost of Goods Sold (COGS)"]
+```
+
+### Setting Up Accounts
+1. Navigate to **Finance → Chart of Accounts** (`/finance/accounts`).
+2. Click **+ New Account** in the header.
+3. Enter the code, name, type, and optional parent account.
+4. Click **Save Account**.
+
+::: warning Immutable Account Types
+Once a financial journal entry or invoice has posted against an account, its **Account Type** (`ASSET`, `LIABILITY`, etc.) cannot be changed. Ensure your account classifications are finalized before processing live transactions.
 :::
 
-## Tax Codes
+---
 
-Tax Codes define how taxes are calculated on invoices, bills, and transactions.
+## 2. Tax Codes & Automated Tax Rules
+
+Tax Codes (`/finance/tax-codes`) define statutory tax percentages, categories, and preselection rules across commercial orders and invoices in TenArm BES.
 
 ### Tax Code Fields
 
-| Field | Required | Description |
-|-------|:--------:|-------------|
-| **Code** | ✅ | Short identifier (e.g., `GST18`, `IGST12`, `VAT0`) |
-| **Name** | ✅ | Descriptive label (e.g., "GST 18%") |
-| **Rate** | ✅ | Tax percentage (e.g., `18.00`) |
-| **Tax Type** | ✅ | `GST`, `IGST`, `CGST`, `SGST`, `VAT`, `CESS` |
-| **Is Active** | ✅ | Inactive tax codes aren't shown in dropdowns |
+| Field | Required | Purpose & Mapping |
+|---|:---:|---|
+| **Code** | ✅ | Short identifier used in order and invoice lines (e.g. `GST18`, `VAT5`, `ZERO`). Immutable once created. |
+| **Name** | ✅ | Clear display label (e.g. *Standard GST 18%*, *Value Added Tax 5%*). |
+| **Rate (%)** | ✅ | Applicable tax percentage from `0` to `100` (e.g. `18.00`, `12.00`, `5.00`). |
+| **Type** | ✅ | Statutory classification: `GST`, `VAT`, or `SALES`. |
+| **Default** | — | When enabled, this tax code automatically pre-populates new quotation, order, invoice, and purchase order lines. |
+| **Active** | — | Active status toggle. Inactive codes are excluded from document dropdowns while preserved on historical records. |
 
-### Setting Up Tax Codes
+### Setting Up a Tax Code
+1. Navigate to **Finance → Tax Codes** (`/finance/tax-codes`) in the navigation flyout under **General Ledger**.
+2. Click **+ Add Tax Code**.
+3. Enter the **Code**, **Name**, **Rate (%)**, and select the statutory **Type**.
+4. (Optional) Check **Default (preselected on new quotes/orders/POs)**.
+5. Click **Create Tax Code**.
 
-1. Navigate to **Finance → Tax Codes**
-2. Click **New Tax Code**
-3. Set the code, name, rate, and type
-4. Assign **GL accounts** for tax posting:
-   - Output Tax Account (for sales)
-   - Input Tax Account (for purchases)
+### Automated Tax Split (India GST)
+When the India Compliance Pack is active:
+- **Intra-State Transactions**: When your organization's state code matches the customer's state code, the system automatically splits standard GST into equal parts: 50% **CGST** and 50% **SGST**.
+- **Inter-State Transactions**: When state codes differ, the system automatically applies **IGST** at the full statutory rate.
 
-### GST Tax Codes (India)
+---
 
-For Indian organizations with GST configured:
+## 3. Fiscal Accounting Periods
 
-| Scenario | Tax Applied |
-|----------|------------|
-| Intra-state (same state) | CGST + SGST (split equally) |
-| Inter-state (different states) | IGST (full rate) |
+Accounting Periods (`/finance/periods`) define your company's fiscal months and enforce regulatory closing cutoffs.
 
-The system determines which taxes to apply automatically based on your organization's state code and the counterparty's state code.
-
-## Accounting Periods
-
-Accounting periods define the fiscal calendar for your organization.
-
-### Period Lifecycle
+### Period Lifecycle & States
 
 ```mermaid
 stateDiagram-v2
-    [*] --> OPEN : Create
-    OPEN --> CLOSED : Close Period
-    CLOSED --> OPEN : Reopen (if needed)
+    [*] --> OPEN : Automated Month Creation
+    OPEN --> CLOSED : Close Period (Month-End Reconciliation)
+    CLOSED --> OPEN : Reopen (Requires Finance Admin Authority)
 ```
 
-| Status | What It Means |
-|--------|-------------|
-| **OPEN** | Transactions can be posted to this period |
-| **CLOSED** | No new transactions allowed — period is finalized |
+| State | What It Means | Operational Rules |
+|---|---|---|
+| `OPEN` | Active accounting period. | Daily transactions, sales invoices, vendor bills, and manual journals can be freely posted. |
+| `CLOSED` | Finalized and audited period. | **Strictly locked**. No new transactions or backdated modifications can be posted. |
 
-### Setting Up Periods
+### How to Close a Month
+1. Navigate to **Finance → Accounting Periods** (`/finance/periods`).
+2. Review the target period (e.g. `June 2026`).
+3. Ensure all bank statements are reconciled, inventory dispatches are invoiced, and depreciation runs have executed.
+4. Click **Close Period**.
+5. Once closed, the period displays a gray `CLOSED` badge. Any attempt to post backdated transactions to this month will be rejected by system validation guards.
 
-1. Navigate to **Finance → Accounting Periods**
-2. Create periods matching your fiscal year:
-   - Monthly (Jan 2024, Feb 2024, ...)
-   - Quarterly (Q1 2024, Q2 2024, ...)
-3. Only **OPEN** periods accept new journal entries
-
-### Month-End Close Process
-
-1. Review all transactions for the period
-2. Post any pending journal entries
-3. Run reconciliation checks
-4. Click **Close Period** to freeze the period
-5. If corrections are needed later, **Reopen** the period (requires finance admin permission)
-
-::: tip
-Always close periods in chronological order. Leaving old periods open allows backdated transactions that may affect financial accuracy.
+::: tip Reopening a Period
+If an emergency audit adjustment is required in a closed period, an authorized Finance Administrator can click **Reopen Period**, post the corrective adjustment, and promptly re-close the period. All reopening events are permanently recorded in the immutable audit log.
 :::
 
-## Bank Accounts
+---
 
-Track your organization's bank accounts for payment reconciliation.
+## 4. Bank Accounts & Statement Reconciliation
 
-### Bank Account Fields
+Register corporate bank accounts to track cash positions and reconcile electronic bank feeds:
 
-| Field | Required | Description |
-|-------|:--------:|-------------|
-| **Bank Name** | ✅ | Name of the banking institution |
-| **Account Number** | ✅ | Your bank account number |
-| **GL Account** | ✅ | Linked COA account for postings |
-| **Currency** | ✅ | Account currency |
-| **Is Active** | ✅ | Inactive accounts aren't shown in payment forms |
+1. Navigate to **Finance → Bank Accounts** (`/finance/banks`).
+2. Click **+ Add Bank Account**.
+3. Specify the bank name, branch, account number, currency, and mapped General Ledger account (e.g. `1110 - HDFC Operating Account`).
+4. Click **Save Bank Account**.
 
-## Setup Checklist
+**Electronic Reconciliation Workflow**
+- Under **Bank Reconciliation**, click **Import Statement (CSV)** to upload bank transactions.
+- The system matches imported line items against recorded customer payments and supplier disbursements based on date, reference number, and amount.
+- Click **Reconcile Match** to confirm cleared items, keeping your general ledger cash balance synchronized with actual bank balances.
 
-Complete these in order for a clean finance setup:
+---
 
-- [ ] **Chart of Accounts** — Create or import your COA
-- [ ] **Tax Codes** — Define all applicable tax codes with GL mappings
-- [ ] **Accounting Periods** — Create periods for the current fiscal year
-- [ ] **Bank Accounts** — Add your organization's bank accounts
-- [ ] **Opening Balances** — Post journal entries for opening balances
-- [ ] **Test Transaction** — Post a test journal entry and verify it lands correctly
+## If Something Goes Wrong (Common Validation & Guard Errors)
 
-## Related Guides
-
-- **[Finance Module](../user-guides/modules/finance)** — Using Finance day-to-day
-- **[Roles & Permissions](./roles-and-permissions)** — Finance role permissions
-- **[Warehouse Setup](./warehouse-setup)** — For inventory-related GL accounts
+| What you see (Toast / Banner) | Why it happens | How to fix it in the workspace |
+|---|---|---|
+| `"Journal entry is out of balance"` | Total debits do not equal total credits. | Adjust the debit and credit lines so that `Total Debits == Total Credits` exactly. |
+| `"Cannot post to closed accounting period"` | The transaction date falls within a fiscal period that has been finalized and closed. | Either update the document date to an active `OPEN` period, or have a Finance Admin temporarily reopen the period. |
+| `"Account is inactive and cannot accept postings"` | Attempting to use a disabled or archived General Ledger account. | Open **Chart of Accounts**, locate the account, and click **Activate Account**. |
+| `"Missing Output Tax GL account mapping"` | A tax code was applied to an invoice line without a mapped Output Tax account. | Open **Tax Codes** under Finance and assign valid GL liability and asset accounts. |
+| `"Duplicate account code already exists"` | Attempting to create an account with a code already in use. | Assign a unique numeric account code following your corporate chart of accounts naming plan. |
+| `"Cannot delete account with existing transaction history"` | Attempting to remove an account that has posted journals. | Accounts with historical ledger entries cannot be deleted. Change the account status to `INACTIVE` instead. |

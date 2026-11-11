@@ -1,79 +1,103 @@
 ---
 title: App Enablement
-description: Enable or disable modules for your organization — control which business functions are available.
+description: Manage active modules, industry packs, and country packs for your organization in TenArm BES.
 ---
 
 # App Enablement
 
-TenArm BES ships with 18 modules, but not every organization needs all of them. **App Enablement** lets you turn modules on or off per organization.
+TenArm BES is built on a modular architecture comprising **21 commercial applications, utility add-ons, country compliance packs, and specialized industry modules**.
 
-## How It Works
+Because an industrial steel service center has very different operational needs than a professional services firm, **App Enablement** allows organizations to activate only the business capabilities they need.
 
-- By default, **all apps are enabled** for a new organization
-- To disable an app, add its name to the organization's disabled list
-- Disabled apps are hidden from the sidebar, their capabilities are blocked, and their menus disappear
-- Re-enabling an app restores access immediately — no data is lost
+---
 
-## Available Apps
+## How App Enablement Works
 
-### Core Domain Apps
-| App | Code | What It Does |
-|-----|------|-------------|
-| CRM | `crm` | Leads, accounts, pipeline, activities |
-| Sales | `sales` | Quotations, sales orders, shipments |
-| Procurement | `procurement` | Purchase orders, goods receipt |
-| Inventory | `inventory` | Products, warehouses, stock |
-| Finance | `finance` | GL, journals, invoices, payments |
-| HR | `hr` | Employees, departments, leave |
-| Payroll | `payroll` | Compensation, pay runs |
-| Manufacturing | `manufacturing` | BOMs, production orders |
-| Maintenance | `maintenance` | Preventive plans, work orders |
-| Asset Management | `asset_management` | Fixed assets, depreciation |
-| Projects | `projects` | Tasks, milestones, Kanban |
-| Service | `service` | Service tickets |
-| Documents | `documents` | PDF templates |
+- **Tenant-Scoped Activation**: Modules are enabled or disabled independently per organization.
+- **Dynamic Interface Adaptation**: When a module is turned off, its navigation icons disappear from the sidebar, its command palette shortcuts are hidden, and its action buttons in cross-module workflows are cleanly suppressed.
+- **Data Non-Destruction**: Disabling an app **never deletes or modifies data**. Existing customer accounts, historical purchase orders, posted invoices, and event ledgers remain preserved. Turning the app back on immediately restores full operational access.
+- **Soft Dependency Degradation**: When a companion module is turned off, dependent modules adapt gracefully without breaking. For example, if **Sales** is enabled but **Finance** is disabled, sales orders and delivery notes function smoothly, while financial general ledger postings are safely held in abeyance.
 
-### Utility Add-Ons
-| App | Code | What It Does |
-|-----|------|-------------|
-| Logistics | `logistics` | Shipments, dispatch, carrier tracking |
-| GST Invoicing | `gst_invoicing` | e-Invoice IRN generation |
-| Customer Portal | `portal` | External party self-service |
-| Reporting | `reporting` | Dashboards, analytics |
-| AI Analytics | `ai` | Insights, forecasts, co-pilot |
+---
 
-## Managing App Enablement
+## Complete Catalog of Modules & Packs
 
-Navigate to **Settings → App Management**:
+### 1. Core Commercial & Operational Applications
 
-1. View the list of all available apps with their current status (Enabled/Disabled)
-2. **Toggle** an app on or off
-3. Changes take effect immediately for all users in the organization
+| Application | Code | Primary Business Scope | Companion Modules |
+|---|---|---|---|
+| **CRM** | `crm` | Leads, prospects, commercial accounts, sales pipelines, and customer follow-up activities. | Sales, Finance |
+| **Sales** | `sales` | Commercial Sales Desk, quotations, sales orders, stock reservations, backorders, and customer delivery notes. | CRM, Inventory, Finance, Logistics |
+| **Procurement** | `procurement` | Purchase orders, RFQs, vendor management, dock receiving, and vendor bill verification. | Inventory, Finance |
+| **Inventory** | `inventory` | Warehouses, bin locations, product catalogs, dual-unit catch-weight, stock movements, and lot tracking. | Sales, Procurement, Logistics |
+| **Finance** | `finance` | Chart of Accounts, double-entry journals, accounts payable/receivable, bank reconciliation, and fiscal periods. | Sales, Procurement, HR, Payroll |
+| **HR** | `hr` | Employee directory, departments, designations, shifts, attendance tracking, and leave requests. | Payroll, Asset Management |
+| **Payroll** | `payroll` | Compensation structures, monthly pay runs, salary slips, and direct financial GL journal posting. | HR, Finance |
+| **Manufacturing** | `manufacturing` | Multi-level Bills of Materials (BOM), production work orders, and finished goods WIP costing. | Inventory |
+| **Maintenance** | `maintenance` | Preventive equipment maintenance schedules, meter readings, and machine repair work orders. | Asset Management, Inventory |
+| **Asset Management** | `asset_management` | Fixed asset registry, custodial assignments, depreciation schedules, and asset disposals. | Maintenance, Finance |
+| **Projects** | `projects` | Project tracking, milestone management, task Kanban boards, and billable timesheets. | CRM, Service |
+| **Service** | `service` | Customer service tickets, SLA tracking, helpdesk routing, and customer issue resolution. | CRM, Projects |
+| **Documents** | `documents` | Custom HTML/CSS PDF document templates for invoices, quotations, purchase orders, and packing slips. | Core Platform |
 
-## What Happens When You Disable an App
+### 2. Utility Add-Ons & Self-Service Portals
 
-| Aspect | Behavior |
-|--------|---------|
-| **Sidebar** | Module disappears from navigation |
-| **Capabilities** | All capability calls for that module return a license error |
-| **Data** | All existing data is preserved — nothing is deleted |
-| **Events** | Events already emitted remain in the event store |
-| **Re-enable** | Turning the app back on restores full access to all existing data |
+| Application | Code | Primary Business Scope | Target Audience |
+|---|---|---|---|
+| **Logistics** | `logistics` | Outbound vehicle dispatches, carrier tracking, driver details, and proof-of-delivery management. | Warehouse & Dispatch Teams |
+| **Customer Portal** | `portal` | Restricted, self-service customer web shell to inspect orders, download invoices, and review account statements. | External Customers & Buyers |
+| **Employee Self-Service** | `self_service` | Dedicated portal for employees to review salary slips, apply for leave, and view personal attendance. | All Enterprise Staff |
+| **Reporting** | `reporting` | Executive CEO Dashboard consolidating headline performance metrics across sales, pipeline, stock, and profit. | Business Executives & Owners |
+| **AI Insights** | `ai` | Rule-based predictive monitors detecting overdue orders, below-reorder inventory, and dormant stock locally on-device. | Operations & Inventory Leads |
+| **AI Assistant** | `assistant` | Conversational natural-language co-pilot answering live operational queries about revenue, backlog, and cashflow. | Management & Department Heads |
 
-::: warning
-Disabling a module that other modules depend on may affect cross-module integrations. For example, disabling Finance while Sales is active means COGS entries won't be posted when stock is shipped.
-:::
+### 3. Country & Industry Packs
 
-## Recommended Starter Configurations
+| Pack | Code | Primary Business Scope | Prerequisites |
+|---|---|---|---|
+| **India Compliance Pack** | `india` | Goods & Services Tax (GST) rules, e-Invoicing (IRN), E-Way bill generation, and Section 194Q buyer TDS. | Finance, Sales |
+| **Steel Industry Pack** | `steel` | Catch-weight coil register, metallurgical heat numbers, grade tracking, and dimensional slit coil allocation. | Inventory, Sales |
 
-### Trading / Distribution Company
-Enable: CRM, Sales, Procurement, Inventory, Finance, Logistics
+---
 
-### Manufacturing Company
-Enable: Sales, Procurement, Inventory, Finance, Manufacturing, Maintenance
+## Recommended Industry Blueprints
 
-### Professional Services Firm
-Enable: CRM, Projects, Finance, HR, Service
+Organizations can adopt pre-configured blueprints tailored to their operational footprint:
 
-### Full Suite
-Keep all apps enabled (default)
+### 1. Metals & Steel Distribution
+- **Recommended Modules**: `steel`, `sales`, `inventory`, `logistics`, `procurement`, `finance`, `crm`
+- **Key Flow**: Multi-ton coils received with metallurgical test certificates, quoted with live catch-weight pricing, allocated by heat number, and dispatched with carrier challans.
+
+### 2. Discrete Manufacturing & Assembly
+- **Recommended Modules**: `manufacturing`, `maintenance`, `inventory`, `procurement`, `finance`, `hr`, `asset_management`
+- **Key Flow**: Multi-level BOM definition, production orders reserving component inventory, machine maintenance tracking, and finished goods transfer to stock.
+
+### 3. Wholesale Distribution & Trading
+- **Recommended Modules**: `sales`, `procurement`, `inventory`, `logistics`, `finance`, `crm`, `portal`
+- **Key Flow**: Sales Desk deal negotiation, backorder management, multi-warehouse stock reservation, carrier vehicle scheduling, and customer self-service order tracking.
+
+### 4. Professional & Engineering Services
+- **Recommended Modules**: `projects`, `service`, `crm`, `finance`, `hr`, `payroll`, `self_service`
+- **Key Flow**: Lead-to-project handover, milestone task tracking, staff timesheets, automated customer milestone invoicing, and payroll execution.
+
+---
+
+## Managing Module Enablement
+
+App activation is configured per tenant during organizational provisioning and can be adjusted through the **Tenant Operations Console** (`/platform/tenants`):
+
+1. Platform administrators open the target organization record.
+2. Under the **Apps & Modules** tab, active applications are selected from the master catalog.
+3. Clicking **Save Changes** updates the tenant's active capability registry.
+4. Changes take effect across user workstations upon their next tab navigation or session refresh.
+
+---
+
+## If Something Goes Wrong (Common Validation & Guard Errors)
+
+| What you see (Toast / Banner) | Why it happens | How to fix it in the workspace |
+|---|---|---|
+| `"Application is not enabled for this organization"` | A user attempted to navigate to a screen or URL belonging to a deactivated module. | Verify your company's subscribed license blueprint or contact your platform administrator to activate the module. |
+| `"Missing companion module dependency"` | Attempting to execute an operation requiring a companion module (e.g. creating a BOM while Inventory is off). | Activate the required prerequisite module (e.g. `inventory` for `manufacturing`). |
+| `"Module hidden in navigation"` | An active user cannot locate a specific module icon in the left Nav Rail. | Check whether the module is enabled in your tenant blueprint and verify that the user's role grants permission for that app. |
+| `"License expired: Interruption imminent"` | Your organization's license term has lapsed or is within the 30-day renewal grace window. | Renew your tenant subscription with your TenArm provider to avoid workspace access interruption. |

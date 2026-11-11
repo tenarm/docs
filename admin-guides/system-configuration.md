@@ -81,7 +81,7 @@ Example: ACME-SO-2024-0001
 | `EXP` | Expense |
 
 ::: warning
-Document numbers are **not configurable** — they follow a system-defined pattern to ensure consistency and prevent collisions. The sequence is managed by `core.sequences.next_document_number()` and is guaranteed unique.
+Document numbers are **not configurable** — they follow a system-defined pattern to ensure consistency and prevent collisions. The sequence is managed automatically by the system sequence generator and is guaranteed unique.
 :::
 
 ## Email Settings

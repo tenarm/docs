@@ -30,14 +30,19 @@ Follow complete business processes across multiple modules:
 | [Manufacturing](./modules/manufacturing) | BOMs, work orders, and production |
 | [Maintenance](./modules/maintenance) | Work orders, maintenance plans, and equipment |
 | [Asset Management](./modules/asset-management) | Fixed assets, depreciation, and disposal |
-| [Projects](./modules/projects) | Projects, tasks, and timesheets |
+| [Projects](./modules/projects) | Project pipelines, task deliverables, milestones, and dependencies |
 | [Service](./modules/service) | Service tickets and SLA management |
 | [Logistics](./modules/logistics) | Shipments and delivery tracking |
 | [Documents](./modules/documents) | Document management and templates |
 | [Portal](./modules/portal) | Customer and vendor self-service portal |
-| [GST Invoicing](./modules/gst-invoicing) | India GST compliance and e-invoicing |
+| [GST Invoicing & Compliance](./modules/gst-invoicing) | Statutory GST e-invoicing (IRN), transport e-way bills, 2D QR codes, state tax splits, and TDS u/s 194Q |
 | [Steel](./modules/steel) | Coil register, heat and grade tracking, catch-weight allocation |
 | [Employee Self-Service](./modules/self-service) | Your own leave, attendance, payslips and expense claims |
 | [Reporting](./modules/reporting) | The CEO Dashboard across every module |
 | [AI Insights](./modules/ai) | Rule-based alerts on overdue orders, dead stock and over-commitment |
 | [AI Assistant](./modules/assistant) | Ask about sales, pipeline and finances in plain language |
+| [Core Platform](./modules/core) | Central approvals triage desk, live activity feed, and document process audit lineage |
+| [Tenant Administration](./modules/admin) | Master counterparties, user provisioning, active sessions, and roles |
+| [System Control](./modules/control) | Organization branding, custom fields, email outbox telemetry, data import, and scheduled tasks |
+| [Monitoring & Observability](./modules/monitoring) | Capability telemetry, performance metrics, event consumer lag, and projection health |
+| [Platform Fleet Console](./modules/platform) | Multi-tenant provisioning, license governance, dead letters, background jobs, and fleet operations |

@@ -23,12 +23,17 @@ const ALL_MODULES: ModuleItem[] = [
   { id: 'logistics', text: 'Logistics', link: '/user-guides/modules/logistics' },
   { id: 'documents', text: 'Documents', link: '/user-guides/modules/documents' },
   { id: 'portal', text: 'Portal', link: '/user-guides/modules/portal' },
-  { id: 'india', text: 'GST Invoicing', link: '/user-guides/modules/gst-invoicing' },
+  { id: 'india', text: 'GST Invoicing & Compliance', link: '/user-guides/modules/gst-invoicing' },
   { id: 'steel', text: 'Steel', link: '/user-guides/modules/steel' },
   { id: 'self_service', text: 'Employee Self-Service', link: '/user-guides/modules/self-service' },
   { id: 'reporting', text: 'Reporting', link: '/user-guides/modules/reporting' },
   { id: 'ai', text: 'AI Insights', link: '/user-guides/modules/ai' },
   { id: 'assistant', text: 'AI Assistant', link: '/user-guides/modules/assistant' },
+  { id: 'core', text: 'Core Platform', link: '/user-guides/modules/core' },
+  { id: 'admin', text: 'Tenant Administration', link: '/user-guides/modules/admin' },
+  { id: 'control', text: 'System Control', link: '/user-guides/modules/control' },
+  { id: 'monitoring', text: 'Monitoring & Observability', link: '/user-guides/modules/monitoring' },
+  { id: 'platform', text: 'Platform Fleet Console', link: '/user-guides/modules/platform' },
 ]
 
 interface StorylineItem {
@@ -81,6 +86,11 @@ const ALL_MODULE_SLUGS: Record<string, string> = {
   reporting: 'reporting',
   ai: 'ai',
   assistant: 'assistant',
+  core: 'core',
+  admin: 'admin',
+  control: 'control',
+  monitoring: 'monitoring',
+  platform: 'platform',
 }
 
 const srcExcludeGlobs: string[] = ['**/node_modules/**']
@@ -102,6 +112,7 @@ export default withMermaid(
     // User documentation defaults to /docs/ to serve directly on https://<tenant>.tenarm.com/docs/
     base: process.env.VITEPRESS_BASE || '/docs/',
     ignoreDeadLinks: true,
+    lastUpdated: true,
     srcExclude: srcExcludeGlobs,
     head: [
       ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
@@ -116,6 +127,13 @@ export default withMermaid(
         dark: '/tenarm-mark-dark.svg',
       },
       siteTitle,
+      lastUpdated: {
+        text: 'Last updated on',
+        formatOptions: {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+        },
+      },
 
       nav: [
         { text: 'Getting Started', link: '/getting-started/what-is-tenarm-bes' },
@@ -165,6 +183,7 @@ export default withMermaid(
             items: [
               { text: 'Overview', link: '/admin-guides/' },
               { text: 'Tenant Setup', link: '/admin-guides/tenant-setup' },
+              { text: 'Party Management', link: '/admin-guides/party-management' },
               { text: 'Roles & Permissions', link: '/admin-guides/roles-and-permissions' },
               { text: 'App Enablement', link: '/admin-guides/app-enablement' },
               { text: 'User Management', link: '/admin-guides/user-management' },

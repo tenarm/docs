@@ -9,26 +9,28 @@ Every person who uses TenArm BES needs a user account. This guide covers creatin
 
 ## Creating a User
 
-1. Navigate to **Settings → User Management**
-2. Click **New User**
-3. Fill in the required fields:
+1. Navigate to **Users** (`/users`).
+2. Click **+ New User** in the header.
+3. In the **New User** modal, complete the fields:
 
 | Field | Required | Notes |
 |-------|:--------:|-------|
 | **Email** | ✅ | Must be unique across the entire system. Used for login. |
-| **Full Name** | ✅ | Displayed throughout the UI |
-| **Password** | ✅ | Set initial password (must meet 12+ character complexity standards) |
-| **Active** | ✅ | Defaults to active. Deactivate to suspend access without deleting. |
+| **Full Name** | ✅ | Displayed throughout the UI, documents, and audit logs. |
+| **Password** | ✅ | Set initial password (must meet 12+ character complexity standards). |
+| **Roles** | ✅ | Check the roles to assign to this account. |
+| **Active** | ✅ | Defaults to active. Uncheck to suspend access without deleting history. |
 
-4. Click **Save**
+4. Click **Create User**.
 
 ## Assigning Roles
 
-After creating a user, assign one or more roles to control their access:
+After creating a user, assign or adjust roles to control their access:
 
-1. Select the user from the user list
-2. In the **Roles** section, check the roles to assign
-3. Save changes — permissions take effect immediately
+1. Select the user from the user list on the left to load the **User Details** panel.
+2. Click **Edit Profile**.
+3. In the **Roles** checklist, select the roles to assign.
+4. Click **Save Changes** — permissions take effect immediately across all devices.
 
 ### Role Quick Reference
 
@@ -107,15 +109,15 @@ Users and administrators can monitor and manage all active signed-in sessions:
    - **This Device Tag**: Highlights the current browser session in green.
 4. **Remote Sign Out & Instant Invalidation**:
    - Web browser sessions use hardened `HttpOnly, Secure, SameSite=Lax` server session cookies. No tokens or credentials reside in browser `localStorage`, eliminating client-side token theft vectors.
-   - Click **Sign Out** next to any specific device to instantly terminate its session in PostgreSQL (e.g. if a phone or laptop was misplaced).
+   - Click **Sign Out** next to any specific device to instantly terminate its session (e.g. if a phone or laptop was misplaced).
    - Click **Sign Out Others** to terminate all other active sign-ins in one action, leaving only the current device authenticated.
-   - **Real-Time Push Disconnect**: Terminated devices do not wait for a grace period or expiry window; the server immediately marks their session inactive in PostgreSQL, and pushes an instant SSE disconnect notification that terminates active browser sessions, clears local workspace tabs and drafts, and redirects remote browsers back to the login screen.
+   - **Real-Time Push Disconnect**: Terminated devices do not wait for a grace period or expiry window; the server immediately terminates their session and pushes an instant SSE disconnect notification that terminates active browser sessions, clears local workspace tabs and drafts, and redirects remote browsers back to the login screen.
 
 ### Portal Users
 
 Portal users are external parties (customers or suppliers) with limited access:
 
-- They're linked to a **Party** record via `party_id`
+- They are linked to an authoritative **Party** record
 - Assign the **Portal User** role — they can only view their own orders, invoices, and tickets
 - They see a restricted portal layout, not the full workspace
 
@@ -142,6 +144,17 @@ When a user clicks a button:
 - **Buttons** for forbidden actions are hidden
 - **API calls** return 403 Forbidden
 
+## If Something Goes Wrong (Common Validation & Guard Errors)
+
+| What you see (Toast / Banner) | Why it happens | How to fix it in the workspace |
+|---|---|---|
+| `"Email already registered in the system"` | The email address is already assigned to another user account. | Use a unique corporate email address for each user. |
+| `"Password must be at least 12 characters and include uppercase, lowercase, number and symbol"` | The password does not meet minimum complexity standards. | Enter a password with 12+ characters containing uppercase, lowercase, number, and special symbol. |
+| `"Password and confirmation do not match"` | The password and confirm password fields in Reset Password differ. | Re-enter both fields ensuring they match identically. |
+| `"Cannot deactivate your own user account"` | An administrator attempted to disable their own account while signed in. | Have another administrator modify or suspend your account. |
+| `"Account locked due to consecutive failed login attempts"` | A user entered an invalid password 5 consecutive times. | Wait 15 minutes for automatic cooldown, or select the user and click **Reset Password** to unlock immediately. |
+| `"Record was modified by another session (vX vs vY)"` | Another administrator updated this user profile concurrently (OCC guard). | The **Conflict Resolution Drawer** opens. Review the other user's changes and choose to merge or reload. |
+
 ## Best Practices
 
 1. **Start minimal** — Assign the fewest roles needed. Add more as the user's responsibilities grow.
@@ -151,5 +164,6 @@ When a user clicks a button:
 
 ## Related Guides
 
+- **[Party Management](./party-management)** — Master business counterparties directory
 - **[Roles & Permissions](./roles-and-permissions)** — Complete permission catalog
 - **[Tenant Setup](./tenant-setup)** — Organization configuration
