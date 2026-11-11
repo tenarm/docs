@@ -62,14 +62,38 @@ div[class*='language-'] {
   border-radius: 12px;
 }
 
-/* Tables — zebra striping and tabular numerals */
+/* Tables — responsive block scrolling, zebra striping, and tabular numerals */
 .vp-doc table {
   font-variant-numeric: tabular-nums;
-  display: table;
-  width: 100%;
+  display: block;
+  border-collapse: collapse;
+  margin: 20px 0;
+  overflow-x: auto;
+  max-width: 100%;
 }
+
 .vp-doc tr:nth-child(even) {
   background-color: var(--vp-c-bg-soft);
+}
+
+.vp-doc th,
+.vp-doc td {
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* Allow inline code snippets in table cells to wrap cleanly at path/symbol boundaries */
+.vp-doc td code,
+.vp-doc th code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Ensure flex content container never expands past viewport bounds */
+.content,
+.content-container {
+  min-width: 0;
 }
 
 /* Mermaid diagrams — clean borders */
