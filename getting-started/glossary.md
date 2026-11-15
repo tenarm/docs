@@ -5,88 +5,85 @@ description: Key terms and concepts used throughout TenArm BES.
 
 # Glossary
 
-Quick reference for the terminology used across TenArm BES.
+Quick reference for the terminology and architecture concepts used across TenArm BES.
+
+---
 
 ## Platform Concepts
 
 | Term | Definition |
-|------|-----------|
-| **Tenant** | An isolated organization within TenArm BES. Each tenant has its own data, users, roles, and configuration. No data crosses tenant boundaries. |
-| **Organization** | Synonymous with tenant — the business entity that owns the data and users within a TenArm BES instance. |
-| **App / Module** | A self-contained functional domain (e.g., CRM, Sales, Inventory). Apps can be enabled or disabled per organization. |
-| **Core Domain App** | A primary business module (Sales, Finance, HR, etc.) that drives essential business operations. |
-| **Utility Add-On** | A cross-cutting enhancement (Logistics, GST Invoicing, Portal) that extends core functionality. |
+|---|---|
+| **Tenant** | An isolated enterprise organization within TenArm BES. Each tenant has its own data, users, roles, and configuration. Cross-tenant access is strictly blocked by kernel boundaries. |
+| **Organization** | Synonymous with tenant — the business entity that owns the data and users within an instance. |
+| **Modular App** | A self-contained functional domain application packaged for modular deployment. Apps can be enabled or disabled per tenant without codebase modifications. |
+| **Kernel** | The foundational substrate (`backend/core/` and `frontend/src/kernel/`) providing the workspace shell, capability execution pipeline, event store, RBAC, and data persistence doors. |
+
+---
 
 ## Capability Pipeline
 
 | Term | Definition |
-|------|-----------|
-| **Capability** | A discrete business action registered in the platform (e.g., `order.create`, `lead.convert`, `po.approve`). Every user-initiated action maps to a capability. |
-| **Capability Pipeline** | The governed execution pipeline that every capability passes through: lookup → license check → RBAC → validation → execution → event emission → projection dispatch → audit log. |
-| **Permission** | A granular access control code (e.g., `lead.view`, `po.approve`) that determines whether a user can execute a specific capability. |
-| **Event** | An immutable business fact emitted when a capability executes successfully (e.g., `OrderShipped`, `InvoiceIssued`, `LeadConverted`). Events are the integration contract between modules. |
-| **Projection** | A handler that reacts to events and updates read models or triggers cross-module side effects (e.g., when Sales emits `QuotationAccepted`, CRM's projection auto-wins the linked deal). |
+|---|---|
+| **Capability** | An atomic, registered business action (e.g., `user.create`, `approval.authorize`, `org.settings.update`). Every system mutation maps to an explicit capability. |
+| **Capability Pipeline** | The governed execution pipeline that every action passes through: lookup → license check → RBAC permission gate → DTO validation → transaction execution → event emission → audit logging. |
+| **Permission** | A fine-grained access control identifier formatted as `{module}.{entity}.{action}` (e.g., `party.admin.list`, `attribute.define`) gating execution of capabilities. |
+| **Event** | An immutable business fact emitted when a capability executes successfully (e.g., `UserCreated`, `SettingUpdated`). Events drive asynchronous projections and outbox notifications. |
+| **Projection** | An asynchronous handler that reacts to domain events to update query-optimized read models. |
 
-## Security & Access
+---
 
-| Term | Definition |
-|------|-----------|
-| **Role** | A named set of permissions assigned to users (e.g., Sales, Procurement, Admin). Users can hold multiple roles. |
-| **RBAC** | Role-Based Access Control — the permission system that governs which capabilities a user can execute. |
-| **TenantCtx** | The security context injected into every API request, carrying the authenticated user's organization, user ID, and permissions. |
-| **Sentinel** | A permission check on a frontend route that determines whether a user can see or navigate to a page. |
-
-## State Machines
+## Security & Access (IAM)
 
 | Term | Definition |
-|------|-----------|
-| **Status** | The current lifecycle state of a document or entity (e.g., `DRAFT`, `SUBMITTED`, `APPROVED`, `COMPLETED`). |
-| **Transition** | A governed status change defined by a `TransitionCapability` — specifying which statuses it can start from, which status it moves to, and what permission is required. |
-| **Approval Policy** | A configurable rule that can intercept a transition and route it through an approval workflow (e.g., purchase orders above \$10,000 require manager approval). |
-| **OCC (Optimistic Concurrency Control)** | A version-based mechanism that prevents two users from simultaneously modifying the same document. Every update checks that the client's version matches the database version. |
+|---|---|
+| **Role** | A named collection of permissions assigned to users (e.g., Admin, Approver). Users can hold multiple roles, and their effective authority is the union of all assigned permissions. |
+| **RBAC** | Role-Based Access Control — the permission model governing which screens, actions, buttons, and API routes a user can access. |
+| **TenantCtx** | The security context injected into every request, carrying the authenticated user's tenant ID, user ID, and active permissions. Never accepted from untrusted client payloads. |
+| **Sentinel** | An access guard on a frontend route that evaluates user permissions before rendering a screen. |
 
-## Document Patterns
+---
 
-| Term | Definition |
-|------|-----------|
-| **Document Number** | A unique sequential identifier generated by the system (e.g., `SO-2024-0001`). Never manually assigned. |
-| **Aggregate Root** | The primary entity in a transactional boundary (e.g., a Sales Order with its line items). All mutations happen through the aggregate root. |
-| **Line Item** | A child record within a document (e.g., a product line in a Purchase Order). Lines are always modified through their parent document's capabilities. |
-| **Version** | An integer counter on every document that increments with each successful mutation, used for optimistic concurrency control. |
-
-## Financial Concepts
+## State Machines & Concurrency
 
 | Term | Definition |
-|------|-----------|
-| **Chart of Accounts (COA)** | The hierarchical structure of GL accounts used for financial classification and reporting. |
-| **Journal Entry** | A double-entry accounting record with balanced debits and credits posted to the General Ledger. |
-| **General Ledger (GL)** | The complete record of all financial transactions, organized by account. |
-| **Fiscal Year / Accounting Period** | The time boundaries for financial reporting. Periods can be opened or closed to control when transactions are allowed. |
-| **COGS (Cost of Goods Sold)** | The cost of inventory items sold, automatically posted to the GL when stock is shipped. |
+|---|---|
+| **Status** | The current lifecycle state of a document or entity (e.g., `DRAFT`, `PENDING_APPROVAL`, `ACTIVE`, `INACTIVE`). |
+| **Transition** | A governed status change specifying valid starting states, destination states, and required authorization. |
+| **Approval Policy** | A configurable rule that intercepts document submission when monetary values meet or exceed configured thresholds, routing items to designated approvers. |
+| **OCC (Optimistic Concurrency Control)** | A versioning mechanism (`expected_version`) that prevents race conditions and concurrent overwrite collisions. |
+| **Conflict Resolution Drawer** | A slide-over reconciliation tool that displays local unsaved edits side-by-side with updated server records when a 409 Conflict occurs. |
 
-## Inventory Concepts
+---
+
+## Documents & Data Integrity
 
 | Term | Definition |
-|------|-----------|
-| **Warehouse** | A physical or logical storage location where inventory is tracked. |
-| **Stock Movement** | A record of inventory entering or leaving a warehouse (receipt, shipment, transfer, adjustment). |
-| **Dual-Unit / Catch-Weight** | Inventory tracking in two units simultaneously — a discrete count (pieces, cases) and a measured weight (kg, lbs). |
-| **Stock Reservation** | A soft hold on inventory quantities for a pending sales order, preventing over-commitment. |
+|---|---|
+| **Document Number** | A sequential, permanent, tamper-evident identifier generated by the system sequence engine (e.g., `ACME-INV-25-26-0001`). Never manually assigned or editable. |
+| **Aggregate Root** | The primary entity in a transactional boundary. All mutations to child records (e.g. line items or attributes) must occur through the parent aggregate root. |
+| **Version** | An integer counter on every record that increments with each successful mutation. |
+| **Process Lineage** | The chronological audit trail and graphical dependency tree showing how parent and child documents connect across operations. |
+
+---
 
 ## Workspace UI
 
 | Term | Definition |
-|------|-----------|
-| **Command Desk** | The split-panel layout used by most modules: entity list on the left, detail/form on the right. |
-| **Quick-Peek** | A slide-over drawer for inspecting a related record without leaving the current page. |
-| **Tab** | One of up to 3 simultaneous workspaces. Each tab maintains its own page state and form drafts. |
-| **Command Palette** | The ⌘K / Ctrl+K overlay for instant search, navigation, and action execution. |
-| **Storyline** | A guided cross-module workflow (e.g., Order-to-Cash) that shows how documents flow from creation to completion across multiple modules. |
+|---|---|
+| **Nav Rail** | The vertical navigation strip on the left showing authorized icons and expandable flyouts. |
+| **Command Desk** | A split-panel workspace pattern: entity queue and filters on the left, full detail and action forms on the right. |
+| **Quick-Peek Drawer** | A contextual slide-over drawer for inspecting referenced records without losing active tab context. |
+| **Workspace Tab** | One of up to 3 simultaneous, independent workspaces (`t1`, `t2`, `t3`) that preserve page state, filters, and drafts during navigation. |
+| **Command Palette** | The `⌘K` / `Ctrl+K` keyboard overlay for instant search and screen navigation. |
+| **Draft Auto-Save** | Automatic preservation of in-progress form inputs in browser session storage, marked by a dirty dot indicator (`•`). |
 
-## Integration
+---
+
+## Integration & Telemetry
 
 | Term | Definition |
-|------|-----------|
-| **Event Store** | The immutable append-only log of all business events. Source of truth for projection replay. |
-| **Idempotency Key** | A client-supplied header (`Idempotency-Key`) that prevents duplicate processing of the same request. |
-| **Cross-Module Boundary** | The strict rule that modules never import each other's code directly. Communication happens only through events or `execute_capability()` calls. |
+|---|---|
+| **Event Store** | The immutable append-only ledger recording all emitted domain events permanently. |
+| **Idempotency Key** | A unique request token that prevents duplicate execution and double-posting from network retries. |
+| **Outbox Queue** | A durable, transactional buffer that stages outbound emails and webhooks for guaranteed delivery. |
+| **Dead-Letter Queue (DLQ)** | An administrative holding queue for messages that have exhausted automated delivery retries. |

@@ -32,32 +32,17 @@ After creating a user, assign or adjust roles to control their access:
 3. In the **Roles** checklist, select the roles to assign.
 4. Click **Save Changes** — permissions take effect immediately across all devices.
 
-### Role Quick Reference
+### Roles & Authority
 
-| Role | Grants Access To |
-|------|-----------------|
-| **Admin** | Everything — full system access |
-| **Sales** | Quotations, orders, customer management |
-| **CRM & Sales** | Leads, pipeline, accounts, contacts + Sales |
-| **Procurement** | Purchase orders, suppliers, goods receipt |
-| **Inventory** | Products, warehouses, stock operations |
-| **Finance** | Invoices, bills, payments, GL, COA |
-| **HR** | Employees, departments, leave |
-| **Payroll** | Pay components, pay runs, salary posting |
-| **Manufacturing** | BOMs, production orders |
-| **Maintenance** | Maintenance plans, work orders |
-| **Asset Management** | Fixed assets, depreciation |
-| **Projects** | Tasks, milestones, Kanban |
-| **Service** | Service tickets |
-| **Logistics** | Dispatch, shipments |
-| **Document Controller** | PDF templates |
-| **GST Compliance** | e-Invoicing, e-way bills |
-| **Auditor / BI** | Reports, dashboards (read-only) |
-| **Portal User** | External party access only |
-| **AI Analytics** | AI insights, co-pilot |
+Roles bundle granular permissions into operational job responsibilities. When provisioning users, administrators select from:
+- **Foundational System Templates**: Pre-installed kernel roles (such as **Admin**, **Auditor**, and **Standard User**).
+- **Application Roles**: Domain-specific roles contributed dynamically by active application packages.
+- **Custom Roles**: Tailored authority profiles authored by your organization administrators.
+
+For full details on role creation, permission matrices, and cloning, see **[Roles & Permissions](./roles-and-permissions)**.
 
 ::: tip Multiple Roles
-A user can hold multiple roles simultaneously. A sales manager might have **Sales**, **CRM**, and **Inventory** (for stock checks). Their effective permissions are the union of all assigned roles.
+A user can hold multiple roles simultaneously. For example, a department lead might hold both an administrative role and an approval role. Their effective authority is the union of all permissions granted across all assigned roles.
 :::
 
 ## Managing Existing Users

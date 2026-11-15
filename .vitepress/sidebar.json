@@ -1,0 +1,91 @@
+{
+  "/getting-started/": [
+    {
+      "text": "Getting Started",
+      "items": [
+        {
+          "text": "What is TenArm BES?",
+          "link": "/getting-started/what-is-tenarm-bes"
+        },
+        {
+          "text": "Quick Start Guide",
+          "link": "/getting-started/quick-start"
+        },
+        {
+          "text": "Glossary",
+          "link": "/getting-started/glossary"
+        }
+      ]
+    }
+  ],
+  "/user-guides/": [
+    {
+      "text": "User Guides",
+      "items": [
+        {
+          "text": "Overview",
+          "link": "/user-guides/"
+        },
+        {
+          "text": "Workspace Basics",
+          "link": "/user-guides/workspace-basics"
+        },
+        {
+          "text": "Approvals & Activity",
+          "link": "/user-guides/approvals-and-activity"
+        },
+        {
+          "text": "AI Assistant",
+          "link": "/user-guides/ai-assistant"
+        }
+      ]
+    }
+  ],
+  "/admin-guides/": [
+    {
+      "text": "Admin Guides",
+      "items": [
+        {
+          "text": "Overview",
+          "link": "/admin-guides/"
+        },
+        {
+          "text": "Tenant Setup",
+          "link": "/admin-guides/tenant-setup"
+        },
+        {
+          "text": "User Management",
+          "link": "/admin-guides/user-management"
+        },
+        {
+          "text": "Roles & Permissions",
+          "link": "/admin-guides/roles-and-permissions"
+        },
+        {
+          "text": "Party Management",
+          "link": "/admin-guides/party-management"
+        },
+        {
+          "text": "Custom Fields",
+          "link": "/admin-guides/custom-fields"
+        },
+        {
+          "text": "System Configuration",
+          "link": "/admin-guides/system-configuration"
+        },
+        {
+          "text": "Data Import & Migration",
+          "link": "/admin-guides/data-import-and-migration"
+        },
+        {
+          "text": "App Enablement",
+          "link": "/admin-guides/app-enablement"
+        },
+        {
+          "text": "FAQ & Troubleshooting",
+          "link": "/admin-guides/faq-and-troubleshooting"
+        }
+      ]
+    }
+  ]
+}

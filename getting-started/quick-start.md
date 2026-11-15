@@ -7,7 +7,9 @@ description: Get up and running with TenArm BES in minutes.
 
 Get started with TenArm BES in a few simple steps.
 
-## For Users
+---
+
+## For Daily Users
 
 ### 1. Log In
 
@@ -15,100 +17,67 @@ Navigate to your organization's TenArm BES URL and sign in with the credentials 
 
 ### 2. Navigate the Workspace
 
-Once logged in, you'll see the **workspace shell** — your home for all business operations:
+Once logged in, you'll see the **workspace shell** — your home for all daily operations:
 
-- **Left sidebar** — Navigate between modules (CRM, Sales, Inventory, etc.)
-- **Tab bar** — Work on up to 3 tasks at once using tabs
-- **Command palette** — Press `⌘K` (Mac) or `Ctrl+K` (Windows) to instantly search and jump to any page
+- **Nav Rail (Left Sidebar)**: Vertical navigation bar showing icons for your authorized screens and installed applications.
+- **Tab Bar (Top)**: Work on up to 3 tasks simultaneously using independent tabs (`t1`, `t2`, `t3`).
+- **Command Palette**: Press `⌘K` (Mac) or `Ctrl+K` (Windows) to instantly search and jump to any screen.
+- **My Day Panel**: Floating panel at the bottom-left showing urgent pending tasks and approvals.
 
-### 3. Open Your First Module
+### 3. Core Operational Surfaces
 
-Click any module in the sidebar to open it. Each module uses the **command desk** layout:
+Every user has access to foundational operational tools:
 
-| Area | What It Shows |
-|------|--------------|
-| **Left panel** | List of records (orders, leads, invoices, etc.) with filters and search |
-| **Right panel** | Detail view or form for the selected record |
+| Surface | Route | Purpose |
+|---|---|---|
+| **Approvals Desk** | `/approvals` | Central inbox to triage, inspect, approve, or reject pending requests. |
+| **Activity Feed** | `/activity` | Real-time ambient event stream across your organization with instant search. |
+| **Process Lineage** | `/process` | Graphical dependency tree and chronological audit trail for any business record. |
+| **AI Assistant** | `/ai` | Natural-language co-pilot to query operational metrics and aggregates. |
 
-### 4. Understand Document Workflows
+### 4. Workspace Ergonomics
 
-Most documents in TenArm BES follow a **status lifecycle**. For example, a Sales Order flows through:
-
-```
-DRAFT → SUBMITTED → APPROVED → SHIPPED → DELIVERED → COMPLETED
-```
-
-Status transitions are governed by the capability pipeline — the system checks your permissions and validates business rules before allowing each transition.
-
-### 5. Use Quick-Peek
-
-When viewing a document, you'll often see references to other records (e.g., an order references its customer). Click these references to open a **quick-peek drawer** — a slide-over panel that shows the related record without leaving your current page.
+- **Multi-Tab Multitasking**: Open records in up to 3 separate tabs without losing scroll position or search filters.
+- **Quick-Peek Drawers**: Click any linked reference code (such as a partner name or document ID) to open a slide-over inspection drawer without leaving your active tab.
+- **Draft Auto-Save**: In-progress edits are automatically preserved in browser storage. A dirty dot (`•`) on the tab header indicates unsaved changes.
 
 ---
 
 ## For Administrators
 
-### 1. Complete Tenant Setup
+### 1. Tenant Setup
 
-After your TenArm BES instance is provisioned:
+Navigate to **Settings → Organization Configuration** (`/settings/config`) to set:
+1. **Identity & Branding**: Company legal name, registered address, and letterhead logo.
+2. **Statutory & Tax**: GSTIN / Tax identifier, tax region state code, and fiscal start month.
+3. **Banking Details**: Corporate settlement account numbers and routing/IFSC codes.
 
-1. **Organization details** — Set your company name, address, and tax registration
-2. **Fiscal year** — Configure your accounting period start date
-3. **Base currency** — Set your operating currency
+### 2. User Accounts & RBAC Roles
 
-### 2. Enable Apps
+1. Go to **Administration → Users** (`/users`) to create accounts for your team.
+2. Go to **Administration → Roles** (`/roles`) to assign built-in system templates or create custom roles with granular capability permissions.
 
-Navigate to **Settings → App Management** to enable the modules your organization needs. Only enabled apps appear in the sidebar.
+### 3. Business Counterparties (Parties)
 
-### 3. Create Users & Assign Roles
+Navigate to **Administration → Parties** (`/parties`) to create master counterparties (customers, suppliers, transporters, vendors) with tax numbers and credit limits.
 
-1. Go to **Settings → User Management**
-2. Create user accounts for your team
-3. Assign roles to each user — roles control which modules and actions they can access
+### 4. System Configuration & Safeguards
 
-Available system roles include:
+Review operational policies under **System Configuration**:
+- Set monetary thresholds in **Approval Policies**.
+- Review automated prefixes in **Document Numbering Sequences**.
+- Monitor outbound transmission health in the **Transactional Email Outbox** (`/control/email-outbox`).
 
-| Role | Access Level |
-|------|-------------|
-| **Admin** | Full access to all modules and settings |
-| **Sales** | Quotations, orders, customer management |
-| **Procurement** | Purchase orders, supplier management, goods receipt |
-| **Finance** | Chart of accounts, journal entries, invoicing |
-| **Inventory** | Products, warehouses, stock operations |
-| **HR** | Employee management, departments, leave |
-| **Manufacturing** | BOMs, production orders, work orders |
+### 5. App Enablement & Data Import
 
-::: tip
-Users can have multiple roles. A sales manager might have both the **Sales** and **CRM** roles.
-:::
-
-### 4. Configure Master Data
-
-Before teams can start working, set up the foundational data:
-
-| Setup Task | Where | What to Configure |
-|-----------|-------|-------------------|
-| **Products** | Inventory → Products | Items your company buys, sells, or manufactures |
-| **Warehouses** | Inventory → Warehouses | Storage locations for inventory tracking |
-| **Chart of Accounts** | Finance → Chart of Accounts | GL account structure for financial reporting |
-| **Tax Codes** | Finance → Tax Codes | Tax rates and GST/VAT configurations |
-| **Parties** | Master Data → Parties | Customers, suppliers, and other business partners |
-
-### 5. Verify with a Test Transaction
-
-Run a quick end-to-end test to verify everything is configured correctly:
-
-1. Create a **Customer** (party)
-2. Create a **Product** with pricing
-3. Create a **Sales Order** for that customer and product
-4. Submit and approve the order
-
-If the order flows through successfully, your setup is complete.
+- **App Enablement**: Activate the modular applications and country packs required for your business in **App Enablement**.
+- **Data Import**: Ingest legacy master records and opening balances using the **Data Import Desk** (`/control/import`).
 
 ---
 
 ## What's Next?
 
-- **[User Guides](/user-guides/)** — Detailed module-by-module feature documentation
-- **[Admin Guides](/admin-guides/)** — Advanced configuration and setup
-- **[Glossary](./glossary)** — Key terms and concepts used throughout the system
+- **[Workspace Basics](/user-guides/workspace-basics)** — In-depth guide to tabs, quick-peek, and navigation
+- **[Approvals & Activity](/user-guides/approvals-and-activity)** — Triage desk, activity stream, and process audit trails
+- **[Tenant Setup](/admin-guides/tenant-setup)** — Foundational organization and branding configuration
+- **[Roles & Permissions](/admin-guides/roles-and-permissions)** — Granular access control and permission matrices

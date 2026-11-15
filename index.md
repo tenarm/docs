@@ -25,13 +25,13 @@ features:
 
   - icon: 📖
     title: User Guides
-    details: Step-by-step instructions for every module — CRM, Sales, Procurement, Inventory, Finance, and more.
+    details: Step-by-step instructions for workspace ergonomics, approvals triage, live activity, and installed applications.
     link: /user-guides/
     linkText: Browse guides
 
   - icon: 🛡️
     title: Admin Guides
-    details: Configure tenants, manage roles and permissions, set up finance and warehouses, import data.
+    details: Configure tenants, manage business counterparties, provision users, assign roles, and import master data.
     link: /admin-guides/
     linkText: Admin setup
 ---

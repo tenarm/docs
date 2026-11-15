@@ -65,7 +65,7 @@ To maintain regulatory compliance and operational transparency, TenArm BES enfor
 
 ### Why does the system block posting a journal entry or vendor bill?
 Check the three primary accounting guards:
-1. **Is the Accounting Period open?** If the document date falls in a closed fiscal period, the posting is rejected. A Finance Administrator must either adjust the date to an open month or temporarily reopen the period. See [Finance Setup](./finance-setup).
+1. **Is the Accounting Period open?** If the document date falls in a closed fiscal period, the posting is rejected. A Finance Administrator must either adjust the date to an open month or temporarily reopen the period.
 2. **Is the journal entry balanced?** The General Ledger enforces strict double-entry balance: `Total Debits == Total Credits` exactly.
 3. **Are any selected accounts inactive?** Inactive or archived GL accounts are barred from receiving new debit or credit lines.
 
@@ -88,7 +88,7 @@ The tax engine compares your organization's registered **State Code** against th
 A facility cannot be marked `INACTIVE` while physical stock balances remain on record:
 1. Navigate to **Inventory → Stock Balances** to check quantities.
 2. Use **Stock Transfers** to relocate remaining items to an active warehouse, or perform a **Stock Adjustment** to reconcile counts to zero.
-3. Once all stock balances reach zero, edit the warehouse record and toggle its status to `INACTIVE`. See [Warehouse Setup](./warehouse-setup).
+3. Once all stock balances reach zero, edit the warehouse record and toggle its status to `INACTIVE`.
 
 ### How does dual-unit catch-weight resolve weight differences?
 Products marked with **Catch-Weight Tracking** record both discrete packaging units (e.g. `10 Coils`) and actual weighed mass (e.g. `184.20 MT`):
@@ -113,7 +113,7 @@ Switch to the **Batch History** tab under **Settings → Data Import** (`/settin
 ## 7. Outbound Email Delivery
 
 ### Why hasn't a customer received their emailed invoice or quotation?
-Navigate to **Settings → Email Outbox** (`/settings/email-outbox`):
+Navigate to **Settings → Email Outbox** (`/control/email-outbox`) or inspect the outbox queue in [System Configuration](./system-configuration):
 1. **Pulse Metrics**: Inspect the **Failed** and **Pending** counters.
 2. **Status Inspection**: Click on the target email row to open the **Email Inspector Modal**.
 3. **Error Payloads**: If a transmission failed (e.g. SMTP timeout, invalid recipient address, or attachment size limit), the error payload displays the exact server response.

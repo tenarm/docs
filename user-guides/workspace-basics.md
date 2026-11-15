@@ -223,7 +223,7 @@ TenArm BES is built for concurrent, multi-user operations. Multiple teammates ca
 
 The workspace maintains an active real-time event stream (SSE) with the backend:
 - When a teammate approves an order, receives stock at the warehouse, or posts a payment, the update streams directly to your browser.
-- Lists, status pills, and document storylines refresh in the background automatically.
+- Lists, status pills, and document details refresh in the background automatically.
 - Live updates **never interrupt your typing or unmount unsaved form drafts**.
 
 ### Conflict Resolution Drawer
